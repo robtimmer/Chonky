@@ -1,13 +1,14 @@
-import { ElementType, UIEvent } from 'react';
-import { Nullable } from 'tsdef';
+import {ElementType, UIEvent} from 'react';
+import {DeepPartial, Nullable} from 'tsdef';
 
-import { ChonkyActions } from '../action-definitions/index';
-import { GenericFileActionHandler } from './action-handler.types';
-import { FileAction } from './action.types';
-import { FileArray } from './file.types';
-import { I18nConfig } from './i18n.types';
-import { ChonkyIconProps } from './icons.types';
-import { ThumbnailGenerator } from './thumbnails.types';
+import {ChonkyActions} from '../action-definitions/index';
+import {GenericFileActionHandler} from './action-handler.types';
+import {FileAction} from './action.types';
+import {FileArray} from './file.types';
+import {I18nConfig} from './i18n.types';
+import {ChonkyIconProps} from './icons.types';
+import {ThumbnailGenerator} from './thumbnails.types';
+import {ChonkyTheme} from "../util/styles";
 
 /**
  * File browser methods exposed to developers via the `FileBrowser` ref.
@@ -165,4 +166,9 @@ export interface FileBrowserProps {
      * Define listener for on scroll events on file lists
      */
     onScroll?: (e: UIEvent<HTMLDivElement>) => void;
+
+    /**
+     * Custom overrides of default theme
+     */
+    customTheme?: DeepPartial<ChonkyTheme>
 }

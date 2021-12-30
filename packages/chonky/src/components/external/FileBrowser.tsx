@@ -3,30 +3,30 @@ import {
     ThemeProvider as MuiThemeProvider,
 } from '@material-ui/core/styles';
 import merge from 'deepmerge';
-import React, { ReactNode, useMemo } from 'react';
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
-import { IntlProvider } from 'react-intl';
-import { ThemeProvider } from 'react-jss';
-import { Provider as ReduxProvider } from 'react-redux';
+import React, {ReactNode, useMemo} from 'react';
+import {DndProvider} from 'react-dnd';
+import {HTML5Backend} from 'react-dnd-html5-backend';
+import {IntlProvider} from 'react-intl';
+import {ThemeProvider} from 'react-jss';
+import {Provider as ReduxProvider} from 'react-redux';
 import shortid from 'shortid';
 
-import { useChonkyStore } from '../../redux/store';
-import { FileBrowserHandle, FileBrowserProps } from '../../types/file-browser.types';
-import { defaultConfig } from '../../util/default-config';
-import { getValueOrFallback } from '../../util/helpers';
-import { useStaticValue } from '../../util/hooks-helpers';
-import { ChonkyFormattersContext, defaultFormatters } from '../../util/i18n';
-import { ChonkyIconContext } from '../../util/icon-helper';
+import {useChonkyStore} from '../../redux/store';
+import {FileBrowserHandle, FileBrowserProps} from '../../types/file-browser.types';
+import {defaultConfig} from '../../util/default-config';
+import {getValueOrFallback} from '../../util/helpers';
+import {useStaticValue} from '../../util/hooks-helpers';
+import {ChonkyFormattersContext, defaultFormatters} from '../../util/i18n';
+import {ChonkyIconContext} from '../../util/icon-helper';
 import {
     darkThemeOverride,
     lightTheme,
     mobileThemeOverride,
     useIsMobileBreakpoint,
 } from '../../util/styles';
-import { ChonkyBusinessLogic } from '../internal/ChonkyBusinessLogic';
-import { ChonkyIconPlaceholder } from '../internal/ChonkyIconPlaceholder';
-import { ChonkyPresentationLayer } from '../internal/ChonkyPresentationLayer';
+import {ChonkyBusinessLogic} from '../internal/ChonkyBusinessLogic';
+import {ChonkyIconPlaceholder} from '../internal/ChonkyIconPlaceholder';
+import {ChonkyPresentationLayer} from '../internal/ChonkyPresentationLayer';
 
 // if (process.env.NODE_ENV === 'development') {
 //     const whyDidYouRender = require('@welldone-software/why-did-you-render');
@@ -35,11 +35,9 @@ import { ChonkyPresentationLayer } from '../internal/ChonkyPresentationLayer';
 //     });
 // }
 
-export const FileBrowser = React.forwardRef<
-    FileBrowserHandle,
-    FileBrowserProps & { children?: ReactNode }
->((props, ref) => {
-    const { instanceId, iconComponent, children } = props;
+export const FileBrowser = React.forwardRef<FileBrowserHandle,
+    FileBrowserProps & { children?: ReactNode }>((props, ref) => {
+    const {instanceId, iconComponent, children} = props;
     const disableDragAndDrop = getValueOrFallback(
         props.disableDragAndDrop,
         defaultConfig.disableDragAndDrop,
@@ -56,7 +54,7 @@ export const FileBrowser = React.forwardRef<
         'boolean'
     );
     const i18n = getValueOrFallback(props.i18n, defaultConfig.i18n);
-    const formatters = useMemo(() => ({ ...defaultFormatters, ...i18n?.formatters }), [
+    const formatters = useMemo(() => ({...defaultFormatters, ...i18n?.formatters}), [
         i18n,
     ]);
 
@@ -66,12 +64,16 @@ export const FileBrowser = React.forwardRef<
     const isMobileBreakpoint = useIsMobileBreakpoint();
     const theme = useMemo(() => {
         const muiTheme = createMuiTheme({
-            palette: { type: darkMode ? 'dark' : 'light' },
+            palette: {type: darkMode ? 'dark' : 'light'},
         });
+
+        const theme = merge(lightTheme, darkMode ? darkThemeOverride : {});
+        
         const combinedTheme = merge(
             muiTheme,
-            merge(lightTheme, darkMode ? darkThemeOverride : {})
+            merge(theme, props.customTheme ? props.customTheme : {})
         );
+
         return isMobileBreakpoint
             ? merge(combinedTheme, mobileThemeOverride)
             : combinedTheme;
