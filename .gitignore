@@ -18,7 +18,7 @@ lerna-*.log
 
 # Production
 lib/
-dist/
+#dist/
 build/
 
 # Misc
